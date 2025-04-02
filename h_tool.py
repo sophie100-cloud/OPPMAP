@@ -5,7 +5,7 @@ import pandas as pd
 # Streamlit app title
 st.title("Honda Opportunity Map - Eventbrite Integration")
 
-# Your Eventbrite API Token (Do NOT expose your token publicly in a public repo)
+# Your Eventbrite API Token (Replace with your actual token)
 EVENTBRITE_TOKEN = "DXZNIUENDEQXXR47X4UD"
 
 # Streamlit inputs for searching events
@@ -13,8 +13,8 @@ keyword = st.text_input("Enter a keyword (e.g., art, movies, music):", "art")
 location = st.text_input("Enter a location (e.g., Los Angeles):", "Los Angeles")
 
 if st.button("Search Events"):
-    # Eventbrite API URL
-    url = f"https://www.eventbriteapi.com/v3/events/search/?q={keyword}&location.address={location}"
+    # Eventbrite API URL with improved formatting
+    url = f"https://www.eventbriteapi.com/v3/events/search/?q={keyword}&location.address={location}&expand=venue"
     headers = {"Authorization": f"Bearer {EVENTBRITE_TOKEN}"}
     
     # Make the API request
@@ -32,6 +32,7 @@ if st.button("Search Events"):
                     "Name": event['name']['text'],
                     "Description": event['description']['text'] if event['description'] else "No description available",
                     "Start Date": event['start']['local'],
+                    "Venue": event['venue']['name'] if 'venue' in event else "Venue not available",
                     "Event URL": event['url']
                 })
             
@@ -42,4 +43,3 @@ if st.button("Search Events"):
             st.write("No events found. Try another keyword or location.")
     else:
         st.write(f"Error fetching data. Status Code: {response.status_code}")
-
