@@ -13,10 +13,9 @@ keyword = st.text_input("Enter a keyword (e.g., art, movies, music):", "art")
 location = st.text_input("Enter a location (e.g., Los Angeles):", "Los Angeles")
 
 if st.button("Search Events"):
-    # Eventbrite API URL - using 'location.address' is required for proper formatting
-    url = f"https://www.eventbriteapi.com/v3/events/search/?q={keyword}&location.address={location}&expand=venue"
-
-    # Headers - Authorization must be formatted as Bearer <TOKEN>
+    # Properly formatted URL with URL encoding for spaces
+    url = f"https://www.eventbriteapi.com/v3/events/search/?q={keyword}&location.address={location}"
+    
     headers = {
         "Authorization": f"Bearer {EVENTBRITE_TOKEN}"
     }
@@ -36,7 +35,6 @@ if st.button("Search Events"):
                     "Name": event['name']['text'],
                     "Description": event['description']['text'] if event['description'] else "No description available",
                     "Start Date": event['start']['local'],
-                    "Venue": event['venue']['name'] if 'venue' in event else "Venue not available",
                     "Event URL": event['url']
                 })
             
@@ -47,4 +45,4 @@ if st.button("Search Events"):
             st.write("No events found. Try another keyword or location.")
     else:
         st.write(f"Error fetching data. Status Code: {response.status_code}")
-        st.write(response.json())  # Show detailed error message from Eventbrite
+        st.write(response.json())  # Show detailed error message
