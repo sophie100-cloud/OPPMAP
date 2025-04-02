@@ -16,7 +16,7 @@ if st.button("Search Events"):
     # Eventbrite API URL
     url = f"https://www.eventbriteapi.com/v3/events/search/?q={keyword}&location.address={location}"
     headers = {"Authorization": f"Bearer {EVENTBRITE_TOKEN}"}
-    
+    EVENTBRITE_TOKEN = "DXZNIUENDEQXXR47X4UD"
     response = requests.get(url, headers=headers)
     
     if response.status_code == 200:
